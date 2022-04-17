@@ -1,0 +1,136 @@
+import unittest
+from Repository.nota_repo import *
+from Repository.dis_repo import *
+from Repository.stud_repo import *
+from Service.nota_service import nota_service
+from Validators.validators import noteValidator
+from domain.entities import notare,disciplina,student
+class TestCaseStud(unittest.TestCase):
+    def setUp(self) -> None:
+        test_repo = RepoStudFile('C:\\Users\\Laura\\PycharmProjects\\pythonProject1\\files_doc\\tests_stud.txt')
+        test_repo_dis = RepoDisFile('C:\\Users\\Laura\\PycharmProjects\\pythonProject1\\files_doc/tests_dis')
+        note_repo = nota_repository()
+        validator = noteValidator()
+        self.__test_srv = nota_service(note_repo, validator, test_repo, test_repo_dis)
+
+    def test_adaugare(self):
+        creat = self.__test_srv.adaugare_nota('4', '105', 6)
+        self.assertTrue(creat.getstudent().getIdstudent() =='4')
+        self.assertTrue( creat.getdis().getprofesor() == 'Carla Antonia')
+        self.assertTrue( creat.getnota() == 6)
+
+    def test_stergere(self):
+        creat = self.__test_srv.adaugare_nota('4', '105', 6)
+        creat2= self.__test_srv.adaugare_nota('5', '103', 7)
+        creat2 = self.__test_srv.adaugare_nota('6', '104', 8)
+        self.assertTrue(len(self.__test_srv.get_all())==3)
+        self.__test_srv.stergere_nota('4', '105',6 )
+        self.assertTrue( len(self.__test_srv.get_all()) == 2)
+
+    def test_modificare(self):
+        creat = self.__test_srv.adaugare_nota('4', '105', 6)
+        creat2 = self.__test_srv.adaugare_nota('5', '103', 7)
+        creat3 = self.__test_srv.adaugare_nota('6', '104', 8)
+        self.__test_srv.modific_nota('4', '105', 6, 10)
+        lst=self.__test_srv.get__all().get_all_note()
+        self.assertTrue(lst[0].getnota()==10)
+        self.__test_srv.modific_nota('5', '103', 7, 9)
+        self.assertTrue( lst[1].getnota() == 9)
+
+    def test_s1(self):
+        self.__test_srv.adaugare_nota('1', '101', 5)
+        self.__test_srv.adaugare_nota('1', '102', 6)
+        self.__test_srv.adaugare_nota('2', '102', 7)
+        self.__test_srv.adaugare_nota('2', '105', 9)
+        self.__test_srv.adaugare_nota('2', '106', 10)
+        self.__test_srv.adaugare_nota('3', '104', 5)
+        self.__test_srv.adaugare_nota('3', '105', 7)
+        self.__test_srv.adaugare_nota('3', '106', 4)
+        self.__test_srv.adaugare_nota('4', '101', 6)
+        self.__test_srv.adaugare_nota('4', '103', 8)
+        self.__test_srv.adaugare_nota('5', '101', 7)
+        self.__test_srv.adaugare_nota('6', '103', 10)
+        self.__test_srv.adaugare_nota('6', '102', 8)
+        self.__test_srv.adaugare_nota('7', '104', 6)
+        self.__test_srv.adaugare_nota('8', '105', 10)
+        self.__test_srv.adaugare_nota('8', '103', 6)
+        self.__test_srv.adaugare_nota('9', '102', 2)
+        self.__test_srv.adaugare_nota('10', '101', 8)
+        tes = self.__test_srv.get_sortnume('101')
+        self.assertTrue( tes[0].getstudnume() == 'Gherghe Valentin')
+        self.assertTrue( tes[1].getnota() == 5)
+        self.assertTrue(tes[2].getstudnume()=='andra')
+
+    def test_s2(self):
+        self.__test_srv.adaugare_nota('1', '101', 5)
+        self.__test_srv.adaugare_nota('1', '102', 6)
+        self.__test_srv.adaugare_nota('2', '102', 7)
+        self.__test_srv.adaugare_nota('2', '105', 9)
+        self.__test_srv.adaugare_nota('2', '106', 10)
+        self.__test_srv.adaugare_nota('3', '104', 5)
+        self.__test_srv.adaugare_nota('3', '105', 7)
+        self.__test_srv.adaugare_nota('3', '106', 4)
+        self.__test_srv.adaugare_nota('4', '101', 6)
+        self.__test_srv.adaugare_nota('4', '103', 8)
+        self.__test_srv.adaugare_nota('5', '101', 7)
+        self.__test_srv.adaugare_nota('6', '103', 10)
+        self.__test_srv.adaugare_nota('6', '102', 8)
+        self.__test_srv.adaugare_nota('7', '104', 6)
+        self.__test_srv.adaugare_nota('8', '105', 10)
+        self.__test_srv.adaugare_nota('8', '103', 6)
+        self.__test_srv.adaugare_nota('9', '102', 2)
+        self.__test_srv.adaugare_nota('10', '101', 8)
+        tes = self.__test_srv.get_sortnota('103')
+        self.assertTrue( tes[0].getstudnume()=='Maracin Antonia')
+        self.assertIs( tes[1].getnota(), 8)
+        self.assertTrue(tes[2].getdisnume()=='Geografie')
+
+    def test_s3(self):
+        self.__test_srv.adaugare_nota('1', '101', 5)
+        self.__test_srv.adaugare_nota('1', '102', 6)
+        self.__test_srv.adaugare_nota('2', '102', 7)
+        self.__test_srv.adaugare_nota('2', '105', 9)
+        self.__test_srv.adaugare_nota('2', '106', 10)
+        self.__test_srv.adaugare_nota('3', '104', 5)
+        self.__test_srv.adaugare_nota('3', '105', 7)
+        self.__test_srv.adaugare_nota('3', '106', 4)
+        self.__test_srv.adaugare_nota('4', '101', 6)
+        self.__test_srv.adaugare_nota('4', '103', 8)
+        self.__test_srv.adaugare_nota('5', '101', 7)
+        self.__test_srv.adaugare_nota('6', '103', 10)
+        self.__test_srv.adaugare_nota('6', '102', 8)
+        self.__test_srv.adaugare_nota('7', '104', 6)
+        self.__test_srv.adaugare_nota('8', '105', 10)
+        self.__test_srv.adaugare_nota('8', '103', 6)
+        self.__test_srv.adaugare_nota('9', '102', 2)
+        self.__test_srv.adaugare_nota('10', '101', 8)
+        tes = self.__test_srv.get_sort_medie()
+        self.assertTrue(tes[0].getnume() == 'Maracin Antonia')
+        self.assertTrue(tes[1].getnume() == 'Ciomba Bianca')
+
+    def test_s4(self):
+        self.__test_srv.adaugare_nota('1', '101', 5)
+        self.__test_srv.adaugare_nota('1', '102', 6)
+        self.__test_srv.adaugare_nota('2', '102', 7)
+        self.__test_srv.adaugare_nota('2', '105', 9)
+        self.__test_srv.adaugare_nota('2', '106', 10)
+        self.__test_srv.adaugare_nota('3', '104', 5)
+        self.__test_srv.adaugare_nota('3', '105', 7)
+        self.__test_srv.adaugare_nota('3', '106', 4)
+        self.__test_srv.adaugare_nota('4', '101', 6)
+        self.__test_srv.adaugare_nota('4', '103', 8)
+        self.__test_srv.adaugare_nota('5', '101', 7)
+        self.__test_srv.adaugare_nota('6', '103', 10)
+        self.__test_srv.adaugare_nota('6', '102', 8)
+        self.__test_srv.adaugare_nota('7', '104', 6)
+        self.__test_srv.adaugare_nota('8', '105', 10)
+        self.__test_srv.adaugare_nota('8', '103', 6)
+        self.__test_srv.adaugare_nota('9', '102', 2)
+        self.__test_srv.adaugare_nota('10', '101', 8)
+        tes = self.__test_srv.get_sort_medie_dis()
+        self.assertTrue(tes[0].getnume() == 'Geometrie')
+        self.assertTrue(tes[1].getnume() == 'Geografie')
+
+if __name__ == '__main__':
+    unittest.main()
+
